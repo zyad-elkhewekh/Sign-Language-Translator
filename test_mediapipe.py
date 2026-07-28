@@ -38,7 +38,7 @@ options = HandLandmarkerOptions(
 landmarker = HandLandmarker.create_from_options(options)
 
 # ==============================================================================
-# NORMALIZATION — must exactly match training
+# NORMALIZATION
 # ==============================================================================
 def normalize_landmarks(hand_landmarks):
     coords = np.array([[p.x, p.y] for p in hand_landmarks])  # (21, 2)
@@ -71,8 +71,8 @@ while True:
     ret, frame = cap.read()
     if not ret:
         break
-    frame = cv2.flip(frame, 1)
 
+    # IMPORTANT: detect on the (unflipped) frame.
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame_rgb)
     timestamp_ms = int((time.time() - start_time) * 1000)
@@ -85,19 +85,24 @@ while True:
     if result.hand_landmarks:
         hand_landmarks = result.hand_landmarks[0]  # list of NormalizedLandmark
 
-        # draw skeleton
-        pts = [(int(p.x * w), int(p.y * h)) for p in hand_landmarks]
-        for a, b in HAND_CONNECTIONS:
-            cv2.line(frame, pts[a], pts[b], (0, 255, 0), 2)
-        for p in pts:
-            cv2.circle(frame, p, 4, (0, 0, 255), -1)
-
         vec = normalize_landmarks(hand_landmarks)
         if vec is not None:
             pred = model.predict(np.expand_dims(vec, axis=0), verbose=0)
             idx = int(np.argmax(pred))
             label = idx_to_class[str(idx)]
             confidence = float(np.max(pred) * 100)
+
+        # Flip now, purely for a natural mirror-view display, prediction
+        # already happened above on the unflipped data. Mirror the landmark
+        # x-coordinates too so the skeleton overlay still lines up visually.
+        frame = cv2.flip(frame, 1)
+        pts = [(int((1.0 - p.x) * w), int(p.y * h)) for p in hand_landmarks]
+        for a, b in HAND_CONNECTIONS:
+            cv2.line(frame, pts[a], pts[b], (0, 255, 0), 2)
+        for p in pts:
+            cv2.circle(frame, p, 4, (0, 0, 255), -1)
+    else:
+        frame = cv2.flip(frame, 1)
 
     # ==============================================================================
     # DISPLAY
