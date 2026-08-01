@@ -12,7 +12,7 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 # ==============================================================================
 IMG_SIZE   = 128    # must match what trained with
 MODEL_PATH = 'best_asl_mobilenet.h5'
-INDICES_PATH = 'class_indices.json'
+INDICES_PATH = '../asl_custom_cnn/class_indices.json'
 
 # ==============================================================================
 # BUILD MODEL + LOAD WEIGHTS
