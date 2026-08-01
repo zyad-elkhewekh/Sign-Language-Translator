@@ -14,7 +14,7 @@ from tensorflow.keras.utils import to_categorical
 # CONFIG
 # ==============================================================================
 train_data = "dataset/asl_alphabet_train"
-MODEL_TASK_PATH = "hand_landmarker.task"   # download once, see instructions below
+MODEL_TASK_PATH = "hand_landmarker.task"  # download once, see instructions below
 OUT_MODEL_PATH = "asl_landmark_model.h5"
 OUT_CLASSES_PATH = "landmark_classes.json"
 

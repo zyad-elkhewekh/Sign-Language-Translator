@@ -34,7 +34,7 @@
   - validation accuracy = 83%
   - train loss = 0.1
   - validation loss = 0.5
-  ![alt text](training_curves.png)
+  ![alt text](asl_custom_cnn/training_curves.png)
 ### Live test:
   - failed miserabley
   - but it was not expected to be accurate

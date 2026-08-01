@@ -12,7 +12,7 @@ from tensorflow.keras.models import load_model
 # ==============================================================================
 MODEL_PATH      = 'asl_landmark_model.h5'
 CLASSES_PATH    = 'landmark_classes.json'
-HAND_TASK_PATH  = 'hand_landmarker.task'   # same file used in training
+HAND_TASK_PATH  = 'hand_landmarker.task'  # same file used in training
 CONF_THRESHOLD  = 60.0
 
 # ==============================================================================
